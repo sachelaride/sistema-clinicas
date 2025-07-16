@@ -1,0 +1,91 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Paciente{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ paciente.nome_completo }}</h1>
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="text-gray-700 mb-2"><strong>Data de Nascimento:</strong> {{ paciente.data_nascimento|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>CPF:</strong> {{ paciente.cpf|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Idade:</strong> {{ paciente.idade|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Sexo:</strong> {{ paciente.sexo|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Endereço:</strong> {{ paciente.endereco|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Telefone:</strong> {{ paciente.telefone|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Email:</strong> {{ paciente.email|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Criado em:</strong> {{ paciente.criado_em }}</p>
+        <p class="text-gray-700 mb-2"><strong>Atualizado em:</strong> {{ paciente.atualizado_em }}</p>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Clínicas Associadas</h2>
+    {% if paciente.clinicas.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for clinica in paciente.clinicas.all %}
+                <li class="px-6 py-3 text-gray-700">{{ clinica.nome }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhuma clínica associada.</p>
+    {% endif %}
+
+    <div class="flex space-x-4 mb-6">
+        <a href="{% url 'paciente_update' paciente.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Paciente</a>
+        <a href="{% url 'paciente_delete' paciente.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Paciente</a>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Responsáveis Legais</h2>
+    {% if paciente.responsaveis.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for responsavel in paciente.responsaveis.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ responsavel.nome }} ({{ responsavel.grau_parentesco|default:"N/A" }})</span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'responsavel_legal_update' responsavel.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'responsavel_legal_delete' responsavel.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhum responsável legal cadastrado.</p>
+    {% endif %}
+    <a href="{% url 'responsavel_legal_create' paciente.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Responsável Legal</a>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Documentos</h2>
+    {% if paciente.documentos.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for documento in paciente.documentos.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ documento.tipo_documento.nome|default:"Documento" }} - <a href="{{ documento.caminho_arquivo.url }}" target="_blank" class="text-blue-500 hover:underline">Ver Arquivo</a></span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'documento_paciente_update' documento.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'documento_paciente_delete' documento.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhum documento cadastrado.</p>
+    {% endif %}
+    <a href="{% url 'documento_paciente_create' paciente.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Documento</a>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Consentimentos</h2>
+    {% if paciente.consentimentos.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for consentimento in paciente.consentimentos.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ consentimento.tipo_consentimento }} (Ativo: {{ consentimento.ativo|yesno:"Sim,Não" }})</span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'consentimento_paciente_update' consentimento.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'consentimento_paciente_delete' consentimento.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhum consentimento cadastrado.</p>
+    {% endif %}
+    <a href="{% url 'consentimento_paciente_create' paciente.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Consentimento</a>
+
+    <a href="{% url 'paciente_list' %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-6">Voltar para a lista de pacientes</a>
+{% endblock %}

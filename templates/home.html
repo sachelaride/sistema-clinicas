@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+    <div class="p-6 bg-gray-100 rounded-lg shadow-md">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Bem-vindo ao Sistema de Clínicas!</h1>
+        {% if user.is_authenticated %}
+            <p class="text-lg text-gray-700 mb-4">Olá, {{ user.username }}!</p>
+            <hr class="border-t border-gray-300 mb-4">
+            <p class="text-gray-700 mb-6">Navegue pelos módulos do sistema:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-200 font-semibold text-gray-700">Atendimento e Gestão de Pacientes</div>
+                    <div class="divide-y divide-gray-200">
+                        <a href="{% url 'paciente_list' %}" class="block px-6 py-3 hover:bg-gray-50">Pacientes</a>
+                        <a href="{% url 'prontuario_list' %}" class="block px-6 py-3 hover:bg-gray-50">Prontuários</a>
+                        <a href="{% url 'atendimento_list' %}" class="block px-6 py-3 hover:bg-gray-50">Atendimentos</a>
+                        <a href="{% url 'agendamento_list' %}" class="list-group-item list-group-item-action">Agendamentos</a>
+                            <a href="{% url 'calendario_view' %}" class="list-group-item list-group-item-action">Calendário de Agendamentos</a>
+                        <a href="{% url 'servico_list' %}" class="block px-6 py-3 hover:bg-gray-50">Agendamento - Serviços</a>
+                        <a href="{% url 'sala_list' %}" class="block px-6 py-3 hover:bg-gray-50">Agendamento - Salas</a>
+                        <a href="{% url 'horario_list' %}" class="block px-6 py-3 hover:bg-gray-50">Agendamento - Horários</a>
+                        <a href="{% url 'status_agendamento_list' %}" class="block px-6 py-3 hover:bg-gray-50">Agendamento - Status</a>
+                        <a href="{% url 'fila_espera_list' %}" class="block px-6 py-3 hover:bg-gray-50">Fila - Filas de Espera</a>
+                        <a href="{% url 'prioridade_fila_list' %}" class="block px-6 py-3 hover:bg-gray-50">Fila - Prioridades</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-200 font-semibold text-gray-700">Gestão de Estoque</div>
+                    <div class="divide-y divide-gray-200">
+                        <a href="{% url 'produto_list' %}" class="block px-6 py-3 hover:bg-gray-50">Produtos</a>
+                        <a href="{% url 'fornecedor_list' %}" class="block px-6 py-3 hover:bg-gray-50">Fornecedores</a>
+                        <a href="{% url 'localizacao_list' %}" class="block px-6 py-3 hover:bg-gray-50">Localizações de Estoque</a>
+                        <a href="{% url 'pedido_compra_list' %}" class="block px-6 py-3 hover:bg-gray-50">Pedidos de Compra</a>
+                        <a href="{% url 'movimento_estoque_list' %}" class="block px-6 py-3 hover:bg-gray-50">Movimentos de Estoque</a>
+                        <a href="{% url 'ajuste_estoque_list' %}" class="block px-6 py-3 hover:bg-gray-50">Ajustes de Estoque</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-200 font-semibold text-gray-700">Gestão de Usuários</div>
+                    <div class="divide-y divide-gray-200">
+                        <a href="{% url 'usuario_list' %}" class="block px-6 py-3 hover:bg-gray-50">Usuários</a>
+                        <a href="{% url 'perfil_aluno_list' %}" class="block px-6 py-3 hover:bg-gray-50">Perfis de Aluno</a>
+                        <a href="{% url 'log_acesso_list' %}" class="block px-6 py-3 hover:bg-gray-50">Logs de Acesso</a>
+                        <a href="{% url 'log_auditoria_list' %}" class="list-group-item list-group-item-action">Logs de Auditoria</a>
+                            <a href="{% url 'atividade_aluno_list' %}" class="list-group-item list-group-item-action">Atividades dos Alunos</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-200 font-semibold text-gray-700">Gestão de Clínicas</div>
+                    <div class="divide-y divide-gray-200">
+                        <a href="{% url 'clinica_list' %}" class="block px-6 py-3 hover:bg-gray-50">Clínicas</a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 bg-gray-200 font-semibold text-gray-700">Administração</div>
+                    <div class="divide-y divide-gray-200">
+                        <a href="/admin/" class="block px-6 py-3 hover:bg-gray-50">Painel de Administração</a>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-lg text-gray-700 mb-4">Faça login para acessar o sistema.</p>
+            <p><a href="{% url 'login' %}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Entrar</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

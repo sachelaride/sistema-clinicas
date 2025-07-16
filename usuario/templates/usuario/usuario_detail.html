@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Usuário{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ usuario.username }}</h1>
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="text-gray-700 mb-2"><strong>Nome Completo:</strong> {{ usuario.nome_completo }}</p>
+        <p class="text-gray-700 mb-2"><strong>Email:</strong> {{ usuario.email|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Telefone:</strong> {{ usuario.telefone|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Ativo:</strong> {{ usuario.is_active|yesno:"Sim,Não" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Data de Criação:</strong> {{ usuario.date_joined }}</p>
+        <p class="text-gray-700 mb-2"><strong>Último Login:</strong> {{ usuario.last_login|default:"N/A" }}</p>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Clínicas Associadas</h2>
+    {% if usuario.clinicas.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for clinica in usuario.clinicas.all %}
+                <li class="px-6 py-3 text-gray-700">{{ clinica.nome }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhuma clínica associada.</p>
+    {% endif %}
+
+    <div class="flex space-x-4 mb-6">
+        <a href="{% url 'usuario_update' usuario.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Usuário</a>
+        <a href="{% url 'usuario_delete' usuario.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Usuário</a>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Perfil de Aluno</h2>
+    {% if usuario.perfil_aluno %}
+        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+            <p class="text-gray-700 mb-2"><strong>RGM:</strong> {{ usuario.perfil_aluno.rgm }}</p>
+            <p class="text-gray-700 mb-2"><strong>Curso:</strong> {{ usuario.perfil_aluno.curso|default:"N/A" }}</p>
+            <p class="text-gray-700 mb-2"><strong>Semestre:</strong> {{ usuario.perfil_aluno.semestre|default:"N/A" }}</p>
+            <p class="text-gray-700 mb-2"><strong>Carga Horária Total:</strong> {{ usuario.perfil_aluno.carga_horaria_total }}</p>
+        </div>
+        <div class="flex space-x-4 mb-6">
+            <a href="{% url 'perfil_aluno_update' usuario.perfil_aluno.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Perfil de Aluno</a>
+            <a href="{% url 'perfil_aluno_delete' usuario.perfil_aluno.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Perfil de Aluno</a>
+        </div>
+    {% else %}
+        <p class="text-gray-600 mb-6">Este usuário não possui um perfil de aluno.</p>
+        <a href="{% url 'perfil_aluno_create' usuario.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Perfil de Aluno</a>
+    {% endif %}
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Atividades do Aluno</h2>
+    {% if usuario.atividades.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for atividade in usuario.atividades.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ atividade.tipo_atividade }} - {{ atividade.data_atividade|date:"d/m/Y H:i" }} ({{ atividade.horas_dedicadas }}h)</span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'atividade_aluno_update' atividade.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'atividade_aluno_delete' atividade.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhuma atividade registrada para este aluno.</p>
+    {% endif %}
+    <a href="{% url 'atividade_aluno_create' usuario.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Atividade</a>
+
+    <a href="{% url 'usuario_list' %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-6">Voltar para a lista de usuários</a>
+{% endblock %}

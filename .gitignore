@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+backups/
+uploads/
+.pytest_cache/
+<<<<<<< HEAD
+=======
+"frontend/" 
+>>>>>>> b3bb375a02daeb3b0f471dd3074c748e9c692b2d

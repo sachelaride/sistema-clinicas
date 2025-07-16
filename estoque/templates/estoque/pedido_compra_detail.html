@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Pedido de Compra{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Pedido de Compra #{{ pedido.pedido_id }}</h1>
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="text-gray-700 mb-2"><strong>Fornecedor:</strong> {{ pedido.fornecedor.nome }}</p>
+        <p class="text-gray-700 mb-2"><strong>Data do Pedido:</strong> {{ pedido.data_pedido }}</p>
+        <p class="text-gray-700 mb-2"><strong>Data de Entrega Prevista:</strong> {{ pedido.data_entrega_prevista|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Status:</strong> {{ pedido.get_status_display }}</p>
+        <p class="text-gray-700 mb-2"><strong>Valor Total:</strong> {{ pedido.total_valor|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Observações:</strong> {{ pedido.observacoes|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Criado por:</strong> {{ pedido.criado_por.username|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Criado em:</strong> {{ pedido.criado_em }}</p>
+        <p class="text-gray-700 mb-2"><strong>Atualizado em:</strong> {{ pedido.atualizado_em }}</p>
+    </div>
+
+    <div class="flex space-x-4 mb-6">
+        <a href="{% url 'pedido_compra_update' pedido.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Pedido</a>
+        <a href="{% url 'pedido_compra_delete' pedido.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Pedido</a>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Itens do Pedido</h2>
+    {% if pedido.itens.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for item in pedido.itens.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ item.produto.nome }} - Quantidade Pedida: {{ item.quantidade_pedida }} - Preço Unitário: {{ item.preco_unitario }}</span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'item_pedido_compra_update' item.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'item_pedido_compra_delete' item.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhum item neste pedido.</p>
+    {% endif %}
+    <a href="{% url 'item_pedido_compra_create' pedido.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Item ao Pedido</a>
+
+    <a href="{% url 'pedido_compra_list' %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-6">Voltar para a lista de pedidos de compra</a>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Perfis de Aluno{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Lista de Perfis de Aluno</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for perfil_aluno in perfis_aluno %}
+            <div class="bg-white shadow-md rounded-lg p-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ perfil_aluno.usuario.nome_completo }}</h2>
+                <p class="text-gray-600 text-sm mb-2">RGM: {{ perfil_aluno.rgm }}</p>
+                <p class="text-gray-600 text-sm mb-4">Curso: {{ perfil_aluno.curso|default:"N/A" }}</p>
+                <a href="{% url 'perfil_aluno_detail' perfil_aluno.usuario_id %}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-sm">Ver Detalhes</a>
+            </div>
+        {% empty %}
+            <div class="col-span-full bg-white shadow-md rounded-lg p-4">
+                <p class="text-gray-600">Nenhum perfil de aluno cadastrado.</p>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'usuario_list' %}" class="mt-6 inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Voltar para a lista de usuários</a>
+{% endblock %}

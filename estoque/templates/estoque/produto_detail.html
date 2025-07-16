@@ -1,0 +1,43 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Produto{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ produto.nome }}</h1>
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="text-gray-700 mb-2"><strong>Descrição:</strong> {{ produto.descricao|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Unidade:</strong> {{ produto.unidade|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Nível Mínimo de Estoque:</strong> {{ produto.nivel_minimo_estoque }}</p>
+        <p class="text-gray-700 mb-2"><strong>Código de Barras:</strong> {{ produto.codigo_barras|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Preço de Custo:</strong> {{ produto.preco_custo|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Preço de Venda:</strong> {{ produto.preco_venda|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Unidade de Compra:</strong> {{ produto.unidade_compra|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Fator de Conversão:</strong> {{ produto.fator_conversao }}</p>
+    </div>
+
+    <div class="flex space-x-4 mb-6">
+        <a href="{% url 'produto_update' produto.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Produto</a>
+        <a href="{% url 'produto_delete' produto.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Produto</a>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Lotes</h2>
+    {% if produto.lotes.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for lote in produto.lotes.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ lote.numero_lote }} (Quantidade Atual: {{ lote.quantidade_atual }})</span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'lote_produto_update' lote.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'lote_produto_delete' lote.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhum lote cadastrado para este produto.</p>
+    {% endif %}
+    <a href="{% url 'lote_produto_create' produto.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Lote</a>
+
+    <a href="{% url 'produto_list' %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-6">Voltar para a lista de produtos</a>
+{% endblock %}

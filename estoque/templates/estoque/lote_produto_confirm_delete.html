@@ -1,0 +1,18 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4" role="alert">
+        <p class="font-bold">Confirmar Exclusão</p>
+        <p>Tem certeza que deseja excluir o lote "<strong class="font-semibold">{{ lote.numero_lote }}</strong>" do produto "<strong class="font-semibold">{{ lote.produto.nome }}</strong>"?</p>
+        <div class="mt-4 flex space-x-4">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Confirmar Exclusão</button>
+            </form>
+            <a href="{% url 'produto_detail' lote.produto.pk %}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">Cancelar</a>
+        </div>
+    </div>
+{% endblock %}

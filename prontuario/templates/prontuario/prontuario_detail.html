@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Prontuário{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Prontuário de {{ prontuario.paciente.nome_completo }}</h1>
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="text-gray-700 mb-2"><strong>Paciente:</strong> {{ prontuario.paciente.nome_completo }}</p>
+        <p class="text-gray-700 mb-2"><strong>Agendamento:</strong> {% if prontuario.agendamento %}{{ prontuario.agendamento.servico.nome }} em {{ prontuario.agendamento.horario.inicio|date:"d/m/Y H:i" }}{% else %}N/A{% endif %}</p>
+        <p class="text-gray-700 mb-2"><strong>Clínica:</strong> {{ prontuario.clinica.nome|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Aluno:</strong> {{ prontuario.aluno.username|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Coordenador:</strong> {{ prontuario.coordenador.username|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Anotações:</strong> {{ prontuario.anotacoes|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Criado em:</strong> {{ prontuario.criado_em }}</p>
+        <p class="text-gray-700 mb-2"><strong>Atualizado em:</strong> {{ prontuario.atualizado_em }}</p>
+    </div>
+
+    <div class="flex space-x-4 mb-6">
+        <a href="{% url 'prontuario_update' prontuario.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Prontuário</a>
+        <a href="{% url 'prontuario_delete' prontuario.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Prontuário</a>
+    </div>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Anexos</h2>
+    {% if prontuario.anexos.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for anexo in prontuario.anexos.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ anexo.tipo_anexo|default:"Anexo" }} - <a href="{{ anexo.caminho_arquivo.url }}" target="_blank" class="text-blue-500 hover:underline">Ver Arquivo</a></span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'anexo_prontuario_update' anexo.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'anexo_prontuario_delete' anexo.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhum anexo cadastrado.</p>
+    {% endif %}
+    <a href="{% url 'anexo_prontuario_create' prontuario.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Anexo</a>
+
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Versões</h2>
+    {% if prontuario.versoes.all %}
+        <ul class="bg-white shadow-md rounded-lg overflow-hidden divide-y divide-gray-200 mb-6">
+            {% for versao in prontuario.versoes.all %}
+                <li class="px-6 py-3 flex justify-between items-center">
+                    <span class="text-gray-700">{{ versao.criado_em|date:"d/m/Y H:i" }} por {{ versao.aluno.username|default:"N/A" }}</span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'versao_prontuario_update' versao.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'versao_prontuario_delete' versao.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 mb-6">Nenhuma versão cadastrada.</p>
+    {% endif %}
+    <a href="{% url 'versao_prontuario_create' prontuario.pk %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-6">Adicionar Versão</a>
+
+    <a href="{% url 'prontuario_list' %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-6">Voltar para a lista de prontuários</a>
+{% endblock %}

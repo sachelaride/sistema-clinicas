@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Ajustes de Estoque{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Lista de Ajustes de Estoque</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for ajuste in ajustes %}
+            <div class="bg-white shadow-md rounded-lg p-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ ajuste.get_tipo_ajuste_display }}</h2>
+                <p class="text-gray-600 text-sm mb-2">Produto: {{ ajuste.produto.nome }}</p>
+                <p class="text-gray-600 text-sm mb-4">Quantidade: {{ ajuste.quantidade }}</p>
+                <a href="{% url 'ajuste_estoque_detail' ajuste.ajuste_id %}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-sm">Ver Detalhes</a>
+            </div>
+        {% empty %}
+            <div class="col-span-full bg-white shadow-md rounded-lg p-4">
+                <p class="text-gray-600">Nenhum ajuste de estoque cadastrado.</p>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'ajuste_estoque_create' %}" class="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Adicionar Novo Ajuste de Estoque</a>
+{% endblock %}

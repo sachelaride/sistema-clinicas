@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Serviço{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ servico.nome }}</h1>
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="text-gray-700 mb-2"><strong>Descrição:</strong> {{ servico.descricao|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Clínica:</strong> {{ servico.clinica.nome|default:"N/A" }}</p>
+    </div>
+
+    <div class="flex space-x-4 mb-6">
+        <a href="{% url 'servico_update' servico.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Serviço</a>
+        <a href="{% url 'servico_delete' servico.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Serviço</a>
+    </div>
+
+    <a href="{% url 'servico_list' %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-6">Voltar para a lista de serviços</a>
+{% endblock %}

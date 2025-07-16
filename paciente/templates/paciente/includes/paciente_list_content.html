@@ -1,0 +1,8 @@
+
+{% for paciente in pacientes %}
+    <a href="{% url 'paciente_detail' paciente.paciente_id %}" class="block px-6 py-4 hover:bg-gray-50">
+        {{ paciente.nome_completo }}
+    </a>
+{% empty %}
+    <p class="p-6 text-gray-600">Nenhum paciente cadastrado.</p>
+{% endfor %}

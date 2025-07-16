@@ -1,0 +1,25 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Movimento de Estoque{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Movimento de Estoque #{{ movimento.movimento_id }}</h1>
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <p class="text-gray-700 mb-2"><strong>Produto:</strong> {{ movimento.produto.nome }}</p>
+        <p class="text-gray-700 mb-2"><strong>Quantidade:</strong> {{ movimento.quantidade }}</p>
+        <p class="text-gray-700 mb-2"><strong>Tipo de Movimento:</strong> {{ movimento.tipo_movimento }}</p>
+        <p class="text-gray-700 mb-2"><strong>Referência:</strong> {{ movimento.referencia|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Movimentado em:</strong> {{ movimento.movimentado_em }}</p>
+        <p class="text-gray-700 mb-2"><strong>Movimentado por:</strong> {{ movimento.movimentado_por.username|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Lote:</strong> {{ movimento.lote.numero_lote|default:"N/A" }}</p>
+        <p class="text-gray-700 mb-2"><strong>Localização:</strong> {{ movimento.localizacao.nome|default:"N/A" }}</p>
+    </div>
+
+    <div class="flex space-x-4 mb-6">
+        <a href="{% url 'movimento_estoque_update' movimento.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Editar Movimento</a>
+        <a href="{% url 'movimento_estoque_delete' movimento.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Excluir Movimento</a>
+    </div>
+
+    <a href="{% url 'movimento_estoque_list' %}" class="inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-6">Voltar para a lista de movimentos de estoque</a>
+{% endblock %}

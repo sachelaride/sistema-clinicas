@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Produtos{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Lista de Produtos</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for produto in produtos %}
+            <div class="bg-white shadow-md rounded-lg p-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ produto.nome }}</h2>
+                <p class="text-gray-600 text-sm mb-2">Unidade: {{ produto.unidade|default:"N/A" }}</p>
+                <p class="text-gray-600 text-sm mb-4">Preço de Venda: {{ produto.preco_venda|default:"N/A" }}</p>
+                <a href="{% url 'produto_detail' produto.produto_id %}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-sm">Ver Detalhes</a>
+            </div>
+        {% empty %}
+            <div class="col-span-full bg-white shadow-md rounded-lg p-4">
+                <p class="text-gray-600">Nenhum produto cadastrado.</p>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'produto_create' %}" class="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Adicionar Novo Produto</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Lista de Tipos de Documento{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Lista de Tipos de Documento</h1>
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="divide-y divide-gray-200">
+            {% for tipo in tipos_documento %}
+                <div class="px-6 py-4 flex justify-between items-center">
+                    <span class="text-gray-700">{{ tipo.nome }} - {{ tipo.descricao|default:"N/A" }}</span>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'tipo_documento_update' tipo.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded text-sm">Editar</a>
+                        <a href="{% url 'tipo_documento_delete' tipo.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm">Excluir</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="p-6 text-gray-600">Nenhum tipo de documento cadastrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <a href="{% url 'tipo_documento_create' %}" class="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Adicionar Novo Tipo de Documento</a>
+{% endblock %}
